@@ -99,7 +99,7 @@ app.post("/register", async (req, res, next) => {
     let foundEmailInDB = await client
       .db("ShoesStore")
       .collection("Users")
-      .findOne({ $or: [{ email: req.body.email }] });
+      .findOne({ $or: [{ email: req.body.email }, {password: null}] });
 
     if (foundEmailInDB) {
       console.log("USER: ", foundEmailInDB);
