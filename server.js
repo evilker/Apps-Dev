@@ -461,19 +461,19 @@ app.post("/getItemsFromDB", async (req, res, _next) => {
           res.status(200).json({ productsFromDB });
         });
     } else {
-      await client
+      let productsFromDB = await client
         .db("ShoesStore")
         .collection("Products")
-        .find({ name: {$regex: searchVal, $options: "i" }})
-        .toArray()
-        .then((productsFromDB) => {
+        .find({ name: {$regex: `${searchVal}`, $options: "i" }})
+        .toArray();
+
+        if(productsFromDB)  {
           console.log("products: ", productsFromDB);
-          if (productsFromDB === null) {
-            res.status(200).json({ noResults: true });
+          res.status(200).json({ productsFromDB });
           } else {
-            res.status(200).json({ productsFromDB });
+            res.status(200).json({ noResults: true });
           }
-        });
+        ;
 
       // productsFromDB = await productsFromDB.json();
 
